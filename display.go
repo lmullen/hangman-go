@@ -27,7 +27,7 @@ func displayTitle() {
 	time.Sleep(5 * time.Second)
 }
 
-func getPuzzle() (string, error) {
+func getInput() (string, error) {
 	instructions := `
 	Please type the hangman puzzle you want your friend to solve.
 	Make sure they aren't looking! 
@@ -46,5 +46,23 @@ func getPuzzle() (string, error) {
 	input = strings.TrimSpace(input)
 	fmt.Println("You entered:")
 	fmt.Println(input)
+	return input, nil
+}
+
+func displayPuzzle(p *puzzle) (string, error) {
+	tm.Clear()
+	tm.MoveCursor(1, 1)
+	tm.Print("Here's the puzzle:\n\n")
+	tm.Println(p.String())
+	tm.Println()
+	tm.Println("Guess a single letter and press return/enter:")
+	tm.Flush()
+	reader := bufio.NewReader(os.Stdin)
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		return "", err
+	}
+	// input = strings.Replace(input, "\n", "", -1) //remove new line
+	input = strings.TrimSpace(input)
 	return input, nil
 }
