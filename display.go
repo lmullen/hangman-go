@@ -53,15 +53,18 @@ func getInput() (string, error) {
 func displayPuzzle(p *puzzle) (string, error) {
 	tm.Clear()
 	tm.MoveCursor(1, 1)
-	tm.Println(tm.Color(p.message, tm.RED))
-	tm.Println()
+	tm.Println(tm.Color(fmt.Sprintf("You have %v mistakes left.", p.mistakesLeft), tm.RED))
 	tm.Println("You've guessed: ")
 	tm.Println(p.Guesses())
-	tm.Println(fmt.Sprintf("You have %v mistakes left.", p.mistakesLeft))
 	tm.Println()
 	tm.Print("Here's the puzzle:\n\n")
 	tm.Println(tm.Color(p.Puzzle(), tm.GREEN))
 	tm.Println()
+	if p.message != "" {
+		tm.Println(tm.Color(p.message, tm.CYAN))
+	} else {
+		tm.Println()
+	}
 	tm.Println("Guess a single letter and press return/enter:")
 	tm.Flush()
 	reader := bufio.NewReader(os.Stdin)

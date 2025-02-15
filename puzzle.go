@@ -74,12 +74,15 @@ func (p *puzzle) MakeGuess(g string, msg string) {
 	}
 	g = strings.ToLower(g)
 	if slices.Contains(p.guesses, g) {
+		// If they already guessed that.
+		p.message = "You already guessed that."
 		return
 	}
 	for _, l := range p.letters {
 		if strings.EqualFold(l.letter, g) {
 			l.show = true
 			good = true
+			p.message = "Good guess!"
 		}
 	}
 	p.guesses = append(p.guesses, g)
