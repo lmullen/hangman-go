@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"time"
 
 	_ "embed"
 
@@ -23,8 +22,12 @@ func displayTitle() {
 	tm.Print(titleText)
 	tm.Println()
 	tm.Print("  by Paul and Daddy\n\n\n")
+	tm.Println()
+	tm.Println("  Press return/enter to play ...")
+	tm.Print("\n\n\n  ")
 	tm.Flush()
-	time.Sleep(5 * time.Second)
+	reader := bufio.NewReader(os.Stdin)
+	reader.ReadString('\n')
 }
 
 func getInput() (string, error) {
@@ -52,8 +55,13 @@ func getInput() (string, error) {
 func displayPuzzle(p *puzzle) (string, error) {
 	tm.Clear()
 	tm.MoveCursor(1, 1)
+	tm.Println(tm.Color(p.message, tm.RED))
+	tm.Println()
+	tm.Println("You've guessed: ")
+	tm.Println(p.Guesses())
+	tm.Println()
 	tm.Print("Here's the puzzle:\n\n")
-	tm.Println(p.String())
+	tm.Println(tm.Color(p.Puzzle(), tm.GREEN))
 	tm.Println()
 	tm.Println("Guess a single letter and press return/enter:")
 	tm.Flush()
@@ -62,7 +70,6 @@ func displayPuzzle(p *puzzle) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	// input = strings.Replace(input, "\n", "", -1) //remove new line
 	input = strings.TrimSpace(input)
 	return input, nil
 }

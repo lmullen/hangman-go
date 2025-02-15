@@ -1,6 +1,6 @@
 package main
 
-import "fmt"
+import "errors"
 
 func main() {
 	displayTitle()
@@ -16,8 +16,11 @@ func main() {
 		}
 		guess, err := validateGuess(input)
 		if err != nil {
-			panic(err)
+			if errors.Is(err, ErrBadGuess) {
+				p.MakeGuess("", "Bad guess. Guess a single letter.")
+				continue
+			}
 		}
-		fmt.Println(guess)
+		p.MakeGuess(guess, "")
 	}
 }

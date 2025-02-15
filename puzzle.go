@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"slices"
 	"strings"
 	"unicode"
 )
@@ -11,7 +12,11 @@ type letter struct {
 	show   bool
 }
 
-type puzzle []*letter
+type puzzle struct {
+	letters []*letter
+	guesses []string
+	message string
+}
 
 func NewLetter(r rune) *letter {
 	show := false
@@ -35,17 +40,44 @@ func NewPuzzle(input string) *puzzle {
 	runes := []rune(input)
 	for _, r := range runes {
 		l = NewLetter(r)
-		p = append(p, l)
+		p.letters = append(p.letters, l)
 	}
 	return &p
 }
 
-func (p *puzzle) String() string {
+func (p *puzzle) Puzzle() string {
 	var sb strings.Builder
-	for _, l := range *p {
+	for _, l := range p.letters {
 		sb.WriteString(l.String())
 	}
 	return sb.String()
+}
+
+func (p *puzzle) Guesses() string {
+	var sb strings.Builder
+	for _, g := range p.guesses {
+		sb.WriteString(g)
+		sb.WriteString(", ")
+	}
+	return sb.String()
+}
+
+func (p *puzzle) MakeGuess(g string, msg string) {
+	p.message = msg
+	// If we get a bad guess we don't need to check for anything
+	if g == "" {
+		return
+	}
+	g = strings.ToLower(g)
+	if slices.Contains(p.guesses, g) {
+		return
+	}
+	for _, l := range p.letters {
+		if strings.EqualFold(l.letter, g) {
+			l.show = true
+		}
+	}
+	p.guesses = append(p.guesses, g)
 }
 
 // ErrBadGuess means we have not received a single rune as a guess
