@@ -17,25 +17,23 @@ var titleText string
 // Display the title
 func displayTitle() {
 	tm.Clear()
-	tm.MoveCursor(1, 2)
-	tm.Println("  Welcome to ...")
+	tm.MoveCursor(1, 1)
+	tm.Println("Welcome to ...")
 	tm.Print(titleText)
 	tm.Println()
-	tm.Print("  by Paul and Daddy\n\n\n")
+	tm.Print("by Paul and Daddy\n\n\n")
 	tm.Println()
-	tm.Println("  Press return/enter to play ...")
-	tm.Print("\n\n\n  ")
+	tm.Println("Press return/enter to play ...")
+	tm.Print("\n\n")
 	tm.Flush()
 	reader := bufio.NewReader(os.Stdin)
 	reader.ReadString('\n')
 }
 
+//go:embed instructions.txt
+var instructions string
+
 func getInput() (string, error) {
-	instructions := `
-	Please type the hangman puzzle you want your friend to solve.
-	Make sure they aren't looking! 
-	Press return/enter once you have finished typing your puzzle.
-	`
 	tm.Clear()
 	tm.MoveCursor(1, 1)
 	tm.Println(instructions)
@@ -59,6 +57,7 @@ func displayPuzzle(p *puzzle) (string, error) {
 	tm.Println()
 	tm.Println("You've guessed: ")
 	tm.Println(p.Guesses())
+	tm.Println(fmt.Sprintf("You have %v mistakes left.", p.mistakesLeft))
 	tm.Println()
 	tm.Print("Here's the puzzle:\n\n")
 	tm.Println(tm.Color(p.Puzzle(), tm.GREEN))

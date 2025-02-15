@@ -1,0 +1,3 @@
+Please type the hangman puzzle you want your friend to solve.
+Make sure they aren't looking!
+Press return/enter once you have finished typing your puzzle.

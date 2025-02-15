@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"slices"
 	"strings"
 	"unicode"
@@ -13,9 +14,10 @@ type letter struct {
 }
 
 type puzzle struct {
-	letters []*letter
-	guesses []string
-	message string
+	letters      []*letter
+	guesses      []string
+	message      string
+	mistakesLeft int
 }
 
 func NewLetter(r rune) *letter {
@@ -42,6 +44,7 @@ func NewPuzzle(input string) *puzzle {
 		l = NewLetter(r)
 		p.letters = append(p.letters, l)
 	}
+	p.mistakesLeft = 5
 	return &p
 }
 
@@ -63,6 +66,7 @@ func (p *puzzle) Guesses() string {
 }
 
 func (p *puzzle) MakeGuess(g string, msg string) {
+	good := false
 	p.message = msg
 	// If we get a bad guess we don't need to check for anything
 	if g == "" {
@@ -75,9 +79,16 @@ func (p *puzzle) MakeGuess(g string, msg string) {
 	for _, l := range p.letters {
 		if strings.EqualFold(l.letter, g) {
 			l.show = true
+			good = true
 		}
 	}
 	p.guesses = append(p.guesses, g)
+	if !good {
+		p.mistakesLeft--
+
+		p.message = fmt.Sprintf("You guessed wrong!")
+
+	}
 }
 
 // ErrBadGuess means we have not received a single rune as a guess
