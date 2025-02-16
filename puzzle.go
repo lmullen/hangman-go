@@ -104,3 +104,20 @@ func validateGuess(s string) (string, error) {
 	}
 	return string(runes[0]), nil
 }
+
+func (p *puzzle) Complete() bool {
+	// Assume the puzzle is incomplete
+	incomplete := false
+	// If any letter is not shown, then mark the puzzle incomplete
+	for _, l := range p.letters {
+		if !l.show {
+			incomplete = true
+		}
+	}
+	// Return the opposite of incomplete
+	return !incomplete
+}
+
+func (p *puzzle) Lost() bool {
+	return p.mistakesLeft <= 0
+}

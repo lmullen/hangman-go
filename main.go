@@ -1,6 +1,10 @@
 package main
 
-import "errors"
+import (
+	"errors"
+
+	tm "github.com/buger/goterm"
+)
 
 func main() {
 	displayTitle()
@@ -22,5 +26,20 @@ func main() {
 			}
 		}
 		p.MakeGuess(guess, "")
+
+		// Check if the puzzle is complete
+		if p.Complete() {
+			displayWon()
+			tm.Println("The puzzle was:")
+			tm.Println(tm.Color(p.Puzzle(), tm.GREEN))
+			tm.Flush()
+			break
+		}
+
+		if p.Lost() {
+			displayLost()
+			break
+		}
+
 	}
 }
