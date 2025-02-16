@@ -25,7 +25,6 @@ func displayTitle() {
 	tm.Print("by Paul and Daddy\n\n\n")
 	tm.Println()
 	tm.Println("Press return/enter to play ...")
-	tm.Print("\n\n")
 	tm.Flush()
 	reader := bufio.NewReader(os.Stdin)
 	reader.ReadString('\n')
