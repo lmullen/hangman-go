@@ -8,6 +8,51 @@ import (
 	"unicode"
 )
 
+var hangmanStates = []string{
+	`  +---+
+  |   |
+      |
+      |
+      |
+      |
+=========`,
+	`  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+=========`,
+	`  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+=========`,
+	`  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+=========`,
+	`  +---+
+  |   |
+  O   |
+ /|\  |
+      |
+      |
+=========`,
+	`  +---+
+  |   |
+  O   |
+ /|\  |
+ / \  |
+      |
+=========`,
+}
+
 type letter struct {
 	letter string
 	show   bool
@@ -18,6 +63,21 @@ type puzzle struct {
 	guesses      []string
 	message      string
 	mistakesLeft int
+}
+
+func (p *puzzle) HangmanState() string {
+	state := hangmanStates[5-p.mistakesLeft]
+	// Split the state into lines and rejoin with explicit newlines
+	lines := strings.Split(state, "\n")
+	return strings.Join(lines, "\n")
+}
+
+func (p *puzzle) Answer() string {
+	var sb strings.Builder
+	for _, l := range p.letters {
+		sb.WriteString(l.letter)
+	}
+	return sb.String()
 }
 
 func NewLetter(r rune) *letter {
