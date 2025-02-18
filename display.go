@@ -57,6 +57,12 @@ func displayPuzzle(p *puzzle) (string, error) {
 	tm.Println("You've guessed: ")
 	tm.Println(p.Guesses())
 	tm.Println()
+	tm.Println("Current state:")
+	// Print each line of the hangman
+	for _, line := range strings.Split(p.HangmanState(), "\n") {
+		tm.Println(tm.Color(line, tm.YELLOW))
+	}
+	tm.Println()
 	tm.Print("Here's the puzzle:\n\n")
 	tm.Println(tm.Color(p.Puzzle(), tm.GREEN))
 	tm.Println()

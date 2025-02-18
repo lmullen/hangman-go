@@ -38,8 +38,12 @@ func main() {
 
 		if p.Lost() {
 			displayLost()
+			tm.Println("The answer was:")
+			tm.Println(tm.Color(p.Answer(), tm.RED))
+			tm.Println("\nYour final guess was:")
+			tm.Println(tm.Color(p.Puzzle(), tm.GREEN))
+			tm.Flush()
 			break
 		}
-
 	}
 }
